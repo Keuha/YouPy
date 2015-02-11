@@ -9,12 +9,12 @@ To use it:
 
 Option:
 
---url : paste a youtube URL here
---video : if you want to download the video clip
---playlist : if you want to dowload a whole playlist
---artist : inform artist name (won't work with --playlist)
---song : informe song name (won't work with --playlist)
---convert : convert audio track in MP3 (use ffmpeg)
+* --url : paste a youtube URL here
+* --video : if you want to download the video clip
+* --playlist : if you want to dowload a whole playlist
+* --artist : inform artist name (won't work with --playlist)
+* --song : informe song name (won't work with --playlist)
+* --convert : convert audio track in MP3 (use ffmpeg)
 
 
 YouPy will create a repository named after the artist name and put the song downloaded in it.
@@ -27,6 +27,6 @@ Feel free to fork me !
 
 #to do
 
-user interface
-installer
-more test
+- [ ] user interface
+- [ ] installer
+- [ ] more test
