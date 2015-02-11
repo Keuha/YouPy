@@ -102,5 +102,5 @@ if __name__ == "__main__":
     parser.add_argument("--playlist", help="will download a whole playlist, can be use with -v --video", action="store_true")
     parser.add_argument("--convert", help="convert audio files in MP3, use ffmpeg", action="store_true")
     args = parser.parse_args()
-    downloader = download(args.url, args.video, args.playlist, args.artist, args.song, arg.convert)
+    downloader = download(args.url, args.video, args.playlist, args.artist, args.song, args.convert)
     downloader.download()
