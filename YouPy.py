@@ -46,22 +46,23 @@ class download:
         if self.video:
             return stream.getbest()
         return stream.getbestaudio()
-
+        
     def download(self):
         if self.playlist:
             self.downloadPlaylist()
+            return
         stuff = self.getGoodStuff(self.pafy)
         if not os.path.exists("./" + self.artist) or not os.path.isdir("./" + self.artist):
             os.makedirs("./" + self.artist)
             stuff.download(quiet=False, filepath="./" + self.artist)
-        for fname in os.listdir("./" + self.artist):
-            if fname.startswith(stuff.title):
-                os.rename(os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + fname, os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + self.song + "." + stuff.extension)
-            if not self.video and self.convert:
-                print("converting ", self.pafy.title, " to MP3 format")
-                self.convertingMP3(os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + self.song + "." + stuff.extension)
-            else:
-                print("no convert")
+            for fname in os.listdir("./" + self.artist):
+                if fname.startswith(stuff.title):
+                    os.rename(os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + fname, os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + self.song + "." + stuff.extension)
+                    if not self.video and self.convert:
+                        print("converting ", self.pafy.title, " to MP3 format")
+                        self.convertingMP3(os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + self.song + "." + stuff.extension)
+                    else:
+                        print("no convert")
 
     def downloadPlaylist(self):
         length = len(self.pafy['items'])
@@ -70,17 +71,16 @@ class download:
             os.makedirs("./" + name)
         for e in self.pafy['items']:
             print("downloading : ", e['pafy'].title)
-            try:
-                stuff = self.getGoodStuff(e['pafy'])
-                if stuff:
-                    stuff.download(quiet=False, filepath="./" + name)
-                    if not self.video and self.convert:
-                        print("\nconverting ", e['pafy'].title, " to MP3 format")
-                        self.convertingMP3(os.path.dirname(os.path.realpath(__file__)) + "/" + name + "/" + e['pafy'].title + ".m4a")
-                else:
-                    print("failed to download : ", e['pafy'].title)
-            except:
-                print("\nsomething went wrong with : ", e['pafy'].title)
+            stuff = self.getGoodStuff(e['pafy'])
+            if stuff:
+                stuff.download(quiet=False, filepath="./" + name)
+                if not self.video and self.convert:
+                    print("\nconverting ", e['pafy'].title, " to MP3 format")
+                    self.convertingMP3(os.path.dirname(os.path.realpath(__file__)) + "/" + name + "/" + e['pafy'].title + ".m4a")
+            else:
+                print("failed to download : ", e['pafy'].title)
+            #except:
+            #    print("\nsomething went wrong with : ", e['pafy'].title)
             time.sleep(.300)
 
     def convertingMP3(self, song):
