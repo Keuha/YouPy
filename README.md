@@ -6,6 +6,7 @@ Still in progress
 To use it:
 
 chmod +x YouPy.Py
+
 ./YouPy.py [-option]
 
 Option:
@@ -20,6 +21,7 @@ Option:
 * --album : add a folder into artist / playlist folder, save content into
 
 Example : 
+
 ./YouPy --url http://youtube.com/thingsthatyouwantodownload --playlist --playname "bar" --album "foo" --convert
 
 YouPy will create a repository named after the artist name and put the song downloaded in it.
