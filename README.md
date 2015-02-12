@@ -15,7 +15,8 @@ Option:
 * --artist : inform artist name (won't work with --playlist)
 * --song : informe song name (won't work with --playlist)
 * --convert : convert audio track in MP3 (use ffmpeg)
-
+* --playname : give a name to playlist
+* --album : add a folder into artist / playlist folder, save content into
 
 YouPy will create a repository named after the artist name and put the song downloaded in it.
 All files will be downloaded on maximum available YouTube quality
