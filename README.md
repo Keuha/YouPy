@@ -5,7 +5,8 @@ Still in progress
 
 To use it:
 
-./YouPy [-option]
+chmod +x YouPy.Py
+./YouPy.py [-option]
 
 Option:
 
@@ -17,6 +18,9 @@ Option:
 * --convert : convert audio track in MP3 (use ffmpeg)
 * --playname : give a name to playlist
 * --album : add a folder into artist / playlist folder, save content into
+
+Example : 
+./YouPy --url http://youtube.com/thingsthatyouwantodownload --playlist --playname "bar" --album "foo" --convert
 
 YouPy will create a repository named after the artist name and put the song downloaded in it.
 All files will be downloaded on maximum available YouTube quality
