@@ -13,7 +13,7 @@ FFMPEG_BIN = "ffmpeg"
 
 class download:
     
-    def __init__(self, url, video, playlist, artist, song, convert):
+    def __init__(self, url, video, playlist, artist, song, convert, playlistName, album):
         self.url = url
         self.playlist = playlist
         if self.playlist:
@@ -41,7 +41,21 @@ class download:
             self.song = ""
 
         self.convert = convert
+        self.playlistName = playlistName
+        self.album = album
+        
+    def playlistPath(self, name):
+        if self.playlistName:
+            if self.album:
+                return self.playlistName + "/" + self.album
+            return self.playllistName
+        return name
 
+    def songPath(self):
+        if self.album:
+            return self.artist + "/" + self.album
+        return self.artist
+    
     def getGoodStuff(self, stream):
         if self.video:
             return stream.getbest()
@@ -52,21 +66,23 @@ class download:
             self.downloadPlaylist()
             return
         stuff = self.getGoodStuff(self.pafy)
-        if not os.path.exists("./" + self.artist) or not os.path.isdir("./" + self.artist):
-            os.makedirs("./" + self.artist)
-            stuff.download(quiet=False, filepath="./" + self.artist)
-            for fname in os.listdir("./" + self.artist):
-                if fname.startswith(stuff.title):
-                    os.rename(os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + fname, os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + self.song + "." + stuff.extension)
-                    if not self.video and self.convert:
-                        print("converting ", self.pafy.title, " to MP3 format")
-                        self.convertingMP3(os.path.dirname(os.path.realpath(__file__)) + "/" + self.artist + "/" + self.song + "." + stuff.extension)
-                    else:
-                        print("no convert")
+        name = songPath()
+        if not os.path.exists("./" + name) or not os.path.isdir("./" + name):
+            os.makedirs("./" + name)
+        stuff.download(quiet=False, filepath="./" + name)
+        for fname in os.listdir("./" + name):
+            if fname.startswith(stuff.title):
+                os.rename(os.path.dirname(os.path.realpath(__file__)) + "/" + name + "/" + fname, os.path.dirname(os.path.realpath(__file__)) + "/" + name + "/" + self.song + "." + stuff.extension)
+                if not self.video and self.convert:
+                    print("converting ", self.pafy.title, " to MP3 format")
+                    self.convertingMP3(os.path.dirname(os.path.realpath(__file__)) + "/" + name + "/" + self.song + "." + stuff.extension)
+                else:
+                    print("no convert")
 
     def downloadPlaylist(self):
         length = len(self.pafy['items'])
-        name = self.pafy['title']
+        print("Downloading ", len, " element(s)")
+        name = self.playlistPath(self.pafy['title'])
         if not os.path.exists("./" + name) or not os.path.isdir("./" + name):
             os.makedirs("./" + name)
         for e in self.pafy['items']:
@@ -101,6 +117,8 @@ if __name__ == "__main__":
     parser.add_argument("--song", help="precise song name")
     parser.add_argument("--playlist", help="will download a whole playlist, can be use with -v --video", action="store_true")
     parser.add_argument("--convert", help="convert audio files in MP3, use ffmpeg", action="store_true")
+    parser.add_argument("--playname", help="give name to playlist")
+    parser.add_argument("--album", help="add a folder into artist / playlist folder, save content into")
     args = parser.parse_args()
-    downloader = download(args.url, args.video, args.playlist, args.artist, args.song, args.convert)
+    downloader = download(args.url, args.video, args.playlist, args.artist, args.song, args.convert, args.playname, args.album)
     downloader.download()
